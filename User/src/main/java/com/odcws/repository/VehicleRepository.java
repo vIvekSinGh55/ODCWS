@@ -3,9 +3,9 @@ package com.odcws.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.odcws.model.User;
+import com.odcws.model.Vehicle;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface VehicleRepository extends JpaRepository<Vehicle, String>{
 
 }
