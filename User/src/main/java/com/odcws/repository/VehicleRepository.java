@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.odcws.model.Vehicle;
 
 @Repository
-public interface VehicleRepository extends JpaRepository<Vehicle, String>{
+public interface VehicleRepository extends JpaRepository<Vehicle, Long>{
 
 }
