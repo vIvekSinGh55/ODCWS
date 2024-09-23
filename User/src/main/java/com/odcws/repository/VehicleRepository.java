@@ -7,5 +7,7 @@ import com.odcws.model.Vehicle;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long>{
+	
+	Vehicle findByVehNo(String vehNo);
 
 }

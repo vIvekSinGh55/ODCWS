@@ -1,7 +1,8 @@
 package com.odcws.service.impl;
 
-
+import com.odcws.model.Address;
 import com.odcws.model.User;
+import com.odcws.repository.AddressRepository;
 import com.odcws.repository.UserRepository;
 import com.odcws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,55 +13,67 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    // Register user
-    @Override
-    public User registerUser(User user) {
-        Optional<User> existingUser = userRepository.findByUserEmail(user.getUserEmail());
-        if (existingUser.isPresent()) {
-            throw new RuntimeException("User with email " + user.getUserEmail() + " already exists.");
-        }
-        return userRepository.save(user);
-    }
+	@Autowired
+	private AddressRepository addressRepository;
 
-    // Login user
-    @Override
-    public Optional<User> loginUser(String email, String password) {
-        Optional<User> userOpt = userRepository.findByUserEmail(email);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            if (user.getUserPassword().equals(password)) {
-                return Optional.of(user);
-            } else {
-                throw new RuntimeException("Invalid password.");
-            }
-        }
-        return Optional.empty();
-    }
+	// Register user
+	@Override
+	public User registerUser(User user) {
+		Optional<User> existingUser = userRepository.findByUserEmail(user.getUserEmail());
+		if (existingUser.isPresent()) {
+			throw new RuntimeException("User with email " + user.getUserEmail() + " already exists.");
+		}
+		return userRepository.save(user);
+	}
 
-    // Update user information
-    @Override
-    public User updateUser(Long userId, User updatedUserInfo) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            user.setUserFirstName(updatedUserInfo.getUserFirstName());
-            user.setUserLastName(updatedUserInfo.getUserLastName());
-            user.setUserEmail(updatedUserInfo.getUserEmail());
-            user.setUserPassword(updatedUserInfo.getUserPassword());
-            user.setUserMobileNo(updatedUserInfo.getUserMobileNo());
-            return userRepository.save(user);
-        } else {
-           throw new RuntimeException("User not found.");
-        }
-		
-    }
+	// Login user
+	@Override
+	public Optional<User> loginUser(String email, String password) {
+		Optional<User> userOpt = userRepository.findByUserEmail(email);
+		if (userOpt.isPresent()) {
+			User user = userOpt.get();
+			if (user.getUserPassword().equals(password)) {
+				return Optional.of(user);
+			} else {
+				throw new RuntimeException("Invalid password.");
+			}
+		}
+		return Optional.empty();
+	}
 
-    // Optional method to fetch user by ID
-    @Override
-    public Optional<User> getUserById(Long userId) {
-        return userRepository.findById(userId);
-    }
+	// Update user information
+	@Override
+	public User updateUser(Long userId, User updatedUserInfo) {
+		Optional<User> userOpt = userRepository.findById(userId);
+		if (userOpt.isPresent()) {
+			User user = userOpt.get();
+			user.setUserFirstName(updatedUserInfo.getUserFirstName());
+			user.setUserLastName(updatedUserInfo.getUserLastName());
+			user.setUserEmail(updatedUserInfo.getUserEmail());
+			user.setUserPassword(updatedUserInfo.getUserPassword());
+			user.setUserMobileNo(updatedUserInfo.getUserMobileNo());
+			return userRepository.save(user);
+		} else {
+			throw new RuntimeException("User not found.");
+		}
+
+	}
+
+	// Optional method to fetch user by ID
+	@Override
+	public Optional<User> getUserById(Long userId) {
+		return userRepository.findById(userId);
+	}
+
+	@Override
+	public Address addAddressToUser(Long userId, Address address) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found with ID " + userId));
+
+		address.setUser(user); // Set the user in the address
+		return addressRepository.save(address); // Save the address
+	}
 }
