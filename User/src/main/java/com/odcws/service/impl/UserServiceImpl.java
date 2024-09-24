@@ -2,8 +2,10 @@ package com.odcws.service.impl;
 
 import com.odcws.model.Address;
 import com.odcws.model.User;
+import com.odcws.model.Vehicle;
 import com.odcws.repository.AddressRepository;
 import com.odcws.repository.UserRepository;
+import com.odcws.repository.VehicleRepository;
 import com.odcws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private VehicleRepository vehicleRepository;
 
 	// Register user
 	@Override
@@ -75,5 +80,13 @@ public class UserServiceImpl implements UserService {
 
 		address.setUser(user); // Set the user in the address
 		return addressRepository.save(address); // Save the address
+	}
+
+	@Override
+	public Vehicle addVehicleToUser(Long userId, Vehicle vehicle) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found with ID " + userId));
+		vehicle.setUser(user); // Associate the vehicle with the fetched user
+		return vehicleRepository.save(vehicle);
 	}
 }

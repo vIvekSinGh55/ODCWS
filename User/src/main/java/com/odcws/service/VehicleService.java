@@ -8,7 +8,7 @@ public interface VehicleService {
 	
 	public Vehicle addVehicle(Vehicle vehicle);
 	
-	public Optional<Vehicle> getVehicle(Long vehId);
+	public Optional<Vehicle> getVehicleById(Long vehId);
 	
 	public String removeVehicle(Long vehId);
 	

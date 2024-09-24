@@ -2,9 +2,11 @@ package com.odcws.controller;
 
 import com.odcws.model.Address;
 import com.odcws.model.User;
+import com.odcws.model.Vehicle;
 import com.odcws.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<User> registerUser(@RequestBody User user) {
 		User registeredUser = userService.registerUser(user);
-		return ResponseEntity.ok(registeredUser);
+		return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
 	}
 
 	// Login user
@@ -35,9 +37,17 @@ public class UserController {
 		User updatedUser = userService.updateUser(userId, user);
 		return ResponseEntity.ok(updatedUser);
 	}
-	
+
 	@PostMapping("/{userId}/addresses")
-    public Address addAddressToUser(@PathVariable Long userId, @RequestBody Address address) {
-        return userService.addAddressToUser(userId, address);
-    }
+	public ResponseEntity<Address> addAddressToUser(@PathVariable Long userId, @RequestBody Address address) {
+		Address newAddress = userService.addAddressToUser(userId, address);
+		return ResponseEntity.status(HttpStatus.CREATED).body(newAddress);
+	}
+
+	@PostMapping("/user/{userId}")
+	public ResponseEntity<Vehicle> addVehicleToUser(@PathVariable Long userId, @RequestBody Vehicle vehicle) {
+		Vehicle newVehicle = userService.addVehicleToUser(userId, vehicle);
+		return ResponseEntity.status(HttpStatus.CREATED).body(newVehicle);
+	}
+
 }
