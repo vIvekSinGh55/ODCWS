@@ -1,5 +1,6 @@
 package com.odcws.controller;
 
+import com.odcws.exception.UserNotFoundException;
 import com.odcws.model.Address;
 import com.odcws.model.User;
 import com.odcws.model.Vehicle;
@@ -26,7 +27,7 @@ public class UserController {
 
 	// Login user
 	@PostMapping("/login")
-	public ResponseEntity<User> loginUser(@RequestParam String email, @RequestParam String password) {
+	public ResponseEntity<User> loginUser(@RequestParam String email, @RequestParam String password) throws UserNotFoundException {
 		User user = userService.loginUser(email, password).get();
 		return ResponseEntity.ok(user);
 	}

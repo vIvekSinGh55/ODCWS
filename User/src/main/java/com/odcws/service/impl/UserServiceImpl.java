@@ -1,5 +1,6 @@
 package com.odcws.service.impl;
 
+import com.odcws.exception.UserNotFoundException;
 import com.odcws.model.Address;
 import com.odcws.model.User;
 import com.odcws.model.Vehicle;
@@ -36,14 +37,14 @@ public class UserServiceImpl implements UserService {
 
 	// Login user
 	@Override
-	public Optional<User> loginUser(String email, String password) {
+	public Optional<User> loginUser(String email, String password) throws UserNotFoundException {
 		Optional<User> userOpt = userRepository.findByUserEmail(email);
 		if (userOpt.isPresent()) {
 			User user = userOpt.get();
 			if (user.getUserPassword().equals(password)) {
 				return Optional.of(user);
 			} else {
-				throw new RuntimeException("Invalid password.");
+				throw new UserNotFoundException("Invalid password.");
 			}
 		}
 		return Optional.empty();
