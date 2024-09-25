@@ -1,5 +1,7 @@
 package com.odcws.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +35,7 @@ public class Vehicle {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+	@JsonBackReference
     private User user;
 
 }
