@@ -55,4 +55,9 @@ public class AddressServiceImpl implements AddressService {
 		return addRepository.save(address);
 	}
 
+	@Override
+	public Optional<Address> getAddressByUserId(Long userId) {
+		return addRepository.findByUserUserId(userId);
+	}
+
 }

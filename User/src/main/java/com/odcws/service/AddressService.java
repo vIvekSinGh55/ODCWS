@@ -13,5 +13,7 @@ public interface AddressService {
 	public String removeAddress(Long addId);
 	
 	public Address updateAddress(Long addId, Address addressDetails);
+	
+	public Optional<Address> getAddressByUserId(Long userId);
 
 }

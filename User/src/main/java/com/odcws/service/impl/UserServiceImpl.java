@@ -9,8 +9,12 @@ import com.odcws.repository.UserRepository;
 import com.odcws.repository.VehicleRepository;
 import com.odcws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
 	@Autowired
 	private VehicleRepository vehicleRepository;
 
@@ -68,6 +72,17 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+//	@Override
+//	public List<User> getAllUsers() {
+//		return userRepository.findAll();
+//	}
+	@Override
+	public Page<User> getAllUsers(int page, int size)
+	{
+		Pageable pageable = PageRequest.of(page, size);
+		return userRepository.findAll(pageable);
+	}
+
 	// Optional method to fetch user by ID
 	@Override
 	public Optional<User> getUserById(Long userId) {
@@ -90,4 +105,5 @@ public class UserServiceImpl implements UserService {
 		vehicle.setUser(user); // Associate the vehicle with the fetched user
 		return vehicleRepository.save(vehicle);
 	}
+
 }

@@ -1,5 +1,7 @@
 package com.odcws.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +11,6 @@ import com.odcws.model.Vehicle;
 public interface VehicleRepository extends JpaRepository<Vehicle, Long>{
 	
 	Vehicle findByVehNo(String vehNo);
+	List<Vehicle> findByUserUserId(Long userId);
 
 }
